@@ -58,5 +58,32 @@ void free_mission_control(MissionControl* system) {
     //   3. system (outermost)
     
     // Your implementation here:
+    // 1. NULL CHECK
+    if (system == NULL) {
+        return;  // nothing to free
+    }
+
+    // 2. FREE NESTED ARRAYS (per-mission communications)
+    if (system->missions != NULL) {
+        for (int i = 0; i < system->mission_count; i++) {
+            Mission *m = &system->missions[i];
+
+            if (m->communications != NULL) {
+                free(m->communications);
+                m->communications = NULL;
+                m->comm_count = 0;
+                m->comm_capacity = 0;
+            }
+        }
+
+        // 3. FREE MISSIONS ARRAY
+        free(system->missions);
+        system->missions = NULL;
+        system->mission_count = 0;
+        system->capacity = 0;
+    }
+
+    // 4. FREE MAIN STRUCTURE
+    free(system);
     
 }

@@ -1,0 +1,77 @@
+================= Space Mission Control Report =================
+Total Missions: 11
+===============================================================
+
+Mission ID   : 5001
+Name         : Manual_Mission
+Launch Date  : 2024-01-15
+Status       : Planned
+Communications: 1 (Routine: 0, Urgent: 1, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6001
+Name         : Mercury_Flyby
+Launch Date  : 2024-01-15
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6002
+Name         : Venus_Orbital
+Launch Date  : 2024-02-28
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6003
+Name         : Earth_Defense
+Launch Date  : 2024-04-12
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6004
+Name         : Mars_Colony_1
+Launch Date  : 2024-05-30
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6005
+Name         : Jupiter_Probe
+Launch Date  : 2024-07-14
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6006
+Name         : Saturn_Ring_Study
+Launch Date  : 2024-08-25
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6007
+Name         : Uranus_Survey
+Launch Date  : 2024-10-08
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6008
+Name         : Neptune_Deep_Scan
+Launch Date  : 2024-11-22
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6009
+Name         : Asteroid_Mining
+Launch Date  : 2024-12-15
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+Mission ID   : 6010
+Name         : Solar_Observatory
+Launch Date  : 2024-12-31
+Status       : Planned
+Communications: 0 (Routine: 0, Urgent: 0, Emergency: 0)
+---------------------------------------------------------------
+
+===================== System Communication Totals ==============
+Total Communications: 1
+  Routine : 0
+  Urgent  : 1
+  Emergency: 0
+===============================================================

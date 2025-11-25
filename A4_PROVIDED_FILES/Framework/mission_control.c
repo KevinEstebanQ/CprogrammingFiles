@@ -48,6 +48,31 @@ MissionControl* create_mission_control(int initial_capacity) {
     //    - Return initialized system
     
     // Your implementation here:
+
+    //validate the capacity that was requested
+    if (initial_capacity <= 0) {
+        return NULL;
+    }
+
+
+    //allocate the control structure
+    MissionControl* system = malloc(sizeof(MissionControl));
+    if (system == NULL) {
+        return NULL;
+    }
+
+    //allocate the missions array
+    system->missions = malloc(sizeof(Mission) * initial_capacity);
+    if (system->missions == NULL) {
+        free(system);
+        return NULL;
+    }
+
+    //Initialize all of the fields
+    system->mission_count = 0;
+    system->capacity = initial_capacity;
+
+    return system;
     
 }
 
@@ -102,5 +127,67 @@ int create_mission_with_crew(MissionControl* system, int mission_id, const char*
     //    - Return 0 for success
     
     // Your implementation here:
+
+    // performin basic input validation 
+    if (system == NULL || system->missions == NULL || name == NULL || launch_date == NULL) {
+        return -1;
+    }
+
+    // check for null mission id on names, launc_dates
+    if (mission_id <= 0 || name[0] == '\0' || launch_date[0] == '\0') {
+        return -1;
+    }
+
+    //is the launch date in valid format?
+    if (!is_valid_date_format(launch_date)) {
+        return -1;
+    }
+
+    //check for duplicates
+    for (int i = 0; i < system->mission_count; i++) {
+        if (system->missions[i].mission_id == mission_id) {
+            return -1;
+        }
+    }
+
+    //make sure to expand the array if need be
+    if (system->mission_count >= system->capacity) {
+        int new_capacity = system->capacity > 0 ? system->capacity * 2 : INITIAL_MISSION_CAPACITY;
+        Mission* resized = realloc(system->missions, sizeof(Mission) * new_capacity);
+        if (resized == NULL) {
+            return -1;
+        }
+        system->missions = resized;
+        system->capacity = new_capacity;
+    }
+
+
+    //initialize a new mission
+    Mission* mission = &system->missions[system->mission_count];
+    mission->mission_id = mission_id;
+
+    //make a safe copy of the name
+    strncpy(mission->mission_name, name, MAX_NAME_LENGTH - 1);
+    mission->mission_name[MAX_NAME_LENGTH - 1] = '\0';
+
+    //copy launch date safely
+    strncpy(mission->launch_date, launch_date, MAX_DATE_LENGTH - 1);
+    mission->launch_date[MAX_DATE_LENGTH - 1] = '\0';
+
+    //set the initial status
+    mission->status = PLANNED;
+
+    //allocate coms array
+    mission->communications = calloc(INITIAL_COMM_CAPACITY, sizeof(CommLog));
+    if (mission->communications == NULL) {
+        return -1;
+    }
+    mission->comm_count = 0;
+    mission->comm_capacity = INITIAL_COMM_CAPACITY;
+
+    //sucessful addition of mission
+    system->mission_count += 1;
+
+    return 0;
     
 }
