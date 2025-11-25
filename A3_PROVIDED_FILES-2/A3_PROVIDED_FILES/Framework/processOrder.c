@@ -80,5 +80,33 @@ void processOrder(float* prices, int* quantities, int menuSize,
     // Safety Tip: Check loop counter against MAX_LOOP_ITERATIONS constant
     
     // Your implementation here:
-    
+
+    if(prices==NULL || quantities == NULL || subtotal == NULL || tax == NULL || total == NULL || menuSize <=0){
+        if(subtotal) *subtotal = 0.0f;
+        if(tax) *tax = 0.0f;
+        if(total) *total = 0.0f;
+        return;
+    } // validate for null pointers and menusize, if any of the pointers is NULL then
+    //initialize subtotal, tax, and total to 0 and do an early return
+
+    float sub = 0.0f; //initialize variables for subtaotal calculation and iteration counts for safety
+    int iterations = 0;
+
+    for (int i = 0; i < menuSize; i++)
+    {
+        if(++iterations > MAX_LOOP_ITERATIONS) break; // break whe amount of operations was exceeded
+        if(quantities[i] > 0){ // make sure that number is positive
+            sub += prices[i] * (float)quantities[i]; // add to the subtotla
+        }
+
+    }
+
+    float tx = sub * TAX_RATE; //create our variables to calculate tax and total
+    float ttl = sub + tx;
+
+
+    //update our pointers by dereferencing them
+    *subtotal = sub;
+    *tax = tx;
+    *total = ttl;
 }

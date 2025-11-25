@@ -95,5 +95,71 @@ void sortMenu(char names[][MAX_NAME_LENGTH],
     // Safety Tip: Check loop counter against MAX_LOOP_ITERATIONS constant
     
     // Your implementation here:
-    
+
+    if(!names || !categories || !prices || !compare || count <=0 ){
+        return;
+    } // input validation
+
+    CompareFunction Strategies[] = {compareByPrice, compareByName, compareByCategory};
+
+     enum { BY_PRICE, BY_NAME, BY_CATEGORY, BY_UNKNOWN } mode = BY_UNKNOWN;
+     if(compare == Strategies[0]) mode = BY_PRICE;
+     if(compare == Strategies[1]) mode = BY_NAME;
+     if(compare == Strategies[2]) mode = BY_CATEGORY;
+     else mode = BY_NAME;
+
+     int iterations = 0; // counter for iteratios to not go over limit
+     int exceeded = 0; // flag to stop iteration
+     for (int i = 0; i < count - 1 && !exceeded; i++){
+        for (int j = 0; j < count - 1; j++){
+            if(++iterations > MAX_LOOP_ITERATIONS){
+                exceeded = 1;
+                break;
+            } // set flag to true if exceed to stop iterations
+
+            int cmp = 0;
+            if(mode == BY_PRICE){
+                cmp = compare((const void*)&prices[i], (const void*)&prices[j+1]);
+            } else if (mode == BY_NAME){
+                cmp = compare((const void*)&names[i], (const void*)&names[j+1]);
+            } else{
+                cmp = compare((const void*)&categories[i], (const void*)&categories[j+1]);
+            }
+
+            if(cmp > 0){ //swap all if out of order
+                float tp = prices[j];
+                prices[j] = prices[j+1];
+                prices[j+1] = tp;
+
+                //swap names safely with manual null
+                char tname[MAX_NAME_LENGTH];
+                strncpy(tname, names[j], MAX_NAME_LENGTH - 1);
+                tname[MAX_NAME_LENGTH - 1] = '\0';
+
+                strncpy(names[j], names[j + 1], MAX_NAME_LENGTH - 1);
+                names[j][MAX_NAME_LENGTH - 1] = '\0';
+
+                strncpy(names[j + 1], tname, MAX_NAME_LENGTH - 1);
+                names[j + 1][MAX_NAME_LENGTH - 1] = '\0';
+
+                /* swap categories safely */
+                char tcat[MAX_CATEGORY_LENGTH];
+                strncpy(tcat, categories[j], MAX_CATEGORY_LENGTH - 1);
+                tcat[MAX_CATEGORY_LENGTH - 1] = '\0';
+
+                strncpy(categories[j], categories[j + 1], MAX_CATEGORY_LENGTH - 1);
+                categories[j][MAX_CATEGORY_LENGTH - 1] = '\0';
+
+                strncpy(categories[j + 1], tcat, MAX_CATEGORY_LENGTH - 1);
+                categories[j + 1][MAX_CATEGORY_LENGTH - 1] = '\0';
+
+            }
+
+
+
+
+        }
+        
+     }
+     
 }

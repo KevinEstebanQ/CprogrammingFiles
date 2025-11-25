@@ -63,5 +63,25 @@ float calculateSum(float* prices, int count) {
     // Safety tip: Check loop counter against MAX_LOOP_ITERATIONS constant
     
     // Your implementation here:
+
+    if(prices == NULL || count <= 0){ // check if pointers are null and return
+        return 0.0f;
+    }
+
+    float sum = 0.0f; //store the sum
+    float* p = prices; // pointer to the start of the array
+    int iterations = 0;//iterations stop counter for safety
+
+
+    for (int i = 0; i < count; i++)
+    {
+        if(++iterations > MAX_LOOP_ITERATIONS){
+            break;
+        }
+        sum+=*p; //add the current price to the sum
+        p++; // increase pointer by 1
+    }
+
+    return sum;
     
 }

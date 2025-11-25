@@ -73,5 +73,21 @@ int findMenuItem(char names[][MAX_NAME_LENGTH], int count, const char* searchNam
     // Safety Tip: Check loop counter against MAX_LOOP_ITERATIONS constant
     
     // Your implementation here:
+    if(names == NULL || searchName == NULL || count <= 0){ //safety check for null emty array or invalid count
+        return ITEM_NOT_FOUND;
+    }
+    int iterations = 0; // counter for iterations
+    for (int i = 0; i < count; i++)
+    {
+        if(++iterations > MAX_LOOP_ITERATIONS){ //break if iterations are too many
+            break;
+        }
+
+        if (strncmp(names[i], searchName, MAX_NAME_LENGTH) == 0){
+            return i;
+        }
+    }
+    
+    return ITEM_NOT_FOUND;
     
 }

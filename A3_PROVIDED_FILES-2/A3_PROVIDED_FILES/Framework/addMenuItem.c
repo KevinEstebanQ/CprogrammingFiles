@@ -70,5 +70,63 @@ int addMenuItem(char names[][MAX_NAME_LENGTH],
     // Remember: Use dereferencing (*) to access/modify count value through pointer
     
     // Your implementation here:
+   /* 1. Null pointer validation */
+   /* 1) Basic pointer/capacity checks */
+    if (!names || !categories || !prices || !count || !name || !category)
+        return OPERATION_FAILURE;
+
+    if (*count < 0 || *count >= MAX_MENU_ITEMS)
+        return OPERATION_FAILURE;
+
+    /* 2) Robust “non-empty” checks:
+          - Don’t trust early '\0'
+          - Skip whitespace AND double quotes (to catch "" cases)
+     */
+    int hasNameChar = 0;
+    for (int i = 0; i < MAX_NAME_LENGTH; ++i) {
+        char c = name[i];
+        if (c == '\0') break;                    /* normal termination */
+        if (c == ' ' || c == '\t' || c == '\n' ||
+            c == '\r' || c == '\v' || c == '\f' ||
+            c == '"') {                          /* treat '"' as non-content */
+            continue;
+        }
+        hasNameChar = 1;
+        break;
+    }
+
+    int hasCatChar = 0;
+    for (int i = 0; i < MAX_CATEGORY_LENGTH; ++i) {
+        char c = category[i];
+        if (c == '\0') break;
+        if (c == ' ' || c == '\t' || c == '\n' ||
+            c == '\r' || c == '\v' || c == '\f' ||
+            c == '"') {
+            continue;
+        }
+        hasCatChar = 1;
+        break;
+    }
+
+    if (!hasNameChar || !hasCatChar)
+        return OPERATION_FAILURE;
+
+    /* 3) Price range */
+    if (price < MIN_PRICE || price > MAX_PRICE)
+        return OPERATION_FAILURE;
+
+    /* 4) Insert safely */
+    int idx = *count;
+
+    strncpy(names[idx], name, MAX_NAME_LENGTH - 1);
+    names[idx][MAX_NAME_LENGTH - 1] = '\0';
+
+    strncpy(categories[idx], category, MAX_CATEGORY_LENGTH - 1);
+    categories[idx][MAX_CATEGORY_LENGTH - 1] = '\0';
+
+    prices[idx] = price;
+
+    (*count)++;
+    return OPERATION_SUCCESS;
     
 }

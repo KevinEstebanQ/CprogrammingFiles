@@ -50,5 +50,27 @@ void copyString(char* dest, const char* src) {
     // Note: No array indexing allowed - pure pointer arithmetic only
     
     // Your implementation here:
+
+    if( dest == NULL || src == NULL){
+        if (dest) *dest = '\0'; // we empty DEST  if non null for safety
+        return; // early return
+    }
+
+    //pointers to traverse both strings
+    const char* psource = src; // pointer to source
+    char* pdest = dest; // write pointer, points to destination
+    int iterations = 0; // counter for iterations
+
+    while(*psource != '\0'){
+        if(++iterations > MAX_LOOP_ITERATIONS){
+            *pdest = '\0'; // destination terminated in case of loop exceeded
+            return;
+        }
+        *pdest = *psource; //we copy the current char
+        ++psource;//advance pointer
+        ++pdest;// advance pointer
+    }
+
+    *pdest = '\0'; //terminator to end of string
     
 }
