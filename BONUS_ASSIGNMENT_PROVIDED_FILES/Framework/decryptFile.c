@@ -59,7 +59,55 @@ int decryptFile(const char* inputFile, const char* outputFile, int** matrix, int
     // - Handle fputc errors
     
     
-    // TODO: Cleanup
-    // Close both files
-    
+    //exact same checks as encrypt file, make sure files and matrix are not null
+    if (inputFile == NULL || outputFile == NULL || matrix == NULL) {
+        return FAILURE;
+    }
+
+    //check matrix size
+    if (size < MIN_MATRIX_SIZE || size > MAX_MATRIX_SIZE) {
+        return FAILURE;
+    }
+
+    //opent the files with the correct modes, clean up if neccessary
+     FILE *inFile = fopen(inputFile, "rb");   
+    if (inFile == NULL) {
+        return FAILURE;
+    }
+
+    FILE *outFile = fopen(outputFile, "w");  
+    if (outFile == NULL) {
+        fclose(inFile);
+        return FAILURE;
+    }
+
+    // prepare variable for decryption and looping
+    int ch;
+    long long byteIndex = 0;
+
+    while ((ch = fgetc(inFile)) != EOF) { // get the char from file if its not the EOF
+
+        //same indexing, wrap around
+        int row = (int)((byteIndex / size) % size);
+        int col = (int)(byteIndex % size);
+
+        // XOR is symmetric: (cipher ^ key) = plain
+        unsigned char encByte = (unsigned char) ch;
+        unsigned char keyByte = (unsigned char) matrix[row][col];
+        unsigned char plainByte = encByte ^ keyByte;
+
+        //put the bite in the outfile, cleanup if we reach the EOF
+        if (fputc(plainByte, outFile) == EOF) {
+            fclose(inFile);
+            fclose(outFile);
+            return FAILURE;
+        }
+
+        byteIndex++;
+    }
+    //post decryption cleanup
+    fclose(inFile);
+    fclose(outFile);
+
+    return SUCCESS;
 }

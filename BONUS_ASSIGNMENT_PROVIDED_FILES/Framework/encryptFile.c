@@ -57,4 +57,66 @@ int encryptFile(const char* inputFile, const char* outputFile, int** matrix, int
     
     // TODO: Cleanup
     // Close both files
+
+    //do input validation to avoid errors
+    if(inputFile == NULL || outputFile == NULL || matrix == NULL){
+        return FAILURE;
+    }
+
+    //check for the size limits
+    if(size > MAX_MATRIX_SIZE || size < MIN_MATRIX_SIZE ){
+        return FAILURE;
+    }
+
+    //open the input file for JUST reading
+    FILE *inFile = fopen(inputFile, "r");
+    if(inFile == NULL) {
+        return FAILURE;
+    }
+
+    //prepare file pointer for writing Binary
+    FILE *outFile = fopen(outputFile, "wb");
+    if(outFile == NULL){ 
+        fclose(inFile);
+        return FAILURE;
+    }
+
+    //start of the encryption Loop
+    int ch;
+    long long byteIndex = 0;
+
+    //loop and get every char from the input file that is not the end of the File
+    while((ch = fgetc(inFile)) != EOF){
+
+        //calculate the row, Col wrap arround if over the size
+        int row = (int)((byteIndex/size)%size);
+        int col = (int)(byteIndex % size);
+
+
+        //variable for the plai character and key to XOR with
+        unsigned char plain = (unsigned char) ch;
+        unsigned char key = (unsigned char) matrix[row][col];
+
+        //XOR the char
+        unsigned char encoded = plain ^ key;
+
+        //write char to file and cleanup 
+        if(fputc(encoded, outFile) == EOF){
+            fclose(inFile);
+            fclose(outFile);
+            return FAILURE;
+        }
+
+        //get index ready for the next loop
+        byteIndex++;
+
+    }
+
+
+    //close the files
+    fclose(inFile);
+    fclose(outFile);
+
+
+    return SUCCESS;
 }
